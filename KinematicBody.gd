@@ -101,122 +101,32 @@ func _physics_process(delta):
 	if d3 >0 and d4 > 0 and d5 > 0 and d6>0:
 		d = 5
 
-	if d == 2 and dp == 1 and !flag:
+	if (d == 2 and dp == 1 or d == 1 and dp == 3 or d == 6 and dp == 2 or d == 3 and dp == 6) and !flag:
 		u = Vector3(0,0,-1)
 		flag =true
 		ii = 0
 		dp = d
-	if d == 1 and dp == 2 and !flag:
+	if (d == 1 and dp == 2 or d == 3 and dp == 1 or d == 6 and dp == 3 or d == 2 and dp == 6) and !flag:
 		u = Vector3(0,0,1)
 		flag =true
 		ii = 0
 		dp = d
-	if d == 3 and dp == 1 and !flag:
-		u = Vector3(0,0,1)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 1 and dp == 3 and !flag:
-		u = Vector3(0,0,-1)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 6 and dp == 2 and !flag:
-		u = Vector3(0,0,-1)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 6 and dp == 3 and !flag:
-		u = Vector3(0,0,1)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 2 and dp == 6 and !flag:
-		u = Vector3(0,0,1)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 3 and dp == 6 and !flag:
-		u = Vector3(0,0,-1)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 4 and dp == 1 and !flag:
+	if (d == 4 and dp == 1 or d == 1 and dp == 5 or d == 6 and dp == 4 or d == 5 and dp == 6) and !flag:
 		u = Vector3(1,0,0)
 		flag =true
 		ii = 0
 		dp = d
-	if d == 1 and dp == 4 and !flag:
+	if (d == 1 and dp == 4 or d == 5 and dp == 1 or d == 6 and dp == 5 or d == 4 and dp == 6) and !flag:
 		u = Vector3(-1,0,0)
 		flag =true
 		ii = 0
 		dp = d
-	if d == 5 and dp == 1 and !flag:
-		u = Vector3(-1,0,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 1 and dp == 5 and !flag:
-		u = Vector3(1,0,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 6 and dp == 4 and !flag:
-		u = Vector3(1,0,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 6 and dp == 5 and !flag:
-		u = Vector3(-1,0,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 4 and dp == 6 and !flag:
-		u = Vector3(-1,0,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 5 and dp == 6 and !flag:
-		u = Vector3(1,0,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 4 and dp == 2 and !flag:
+	if (d == 4 and dp == 2 or d == 5 and dp == 3 or d == 3 and dp == 4 or d == 2 and dp == 5) and !flag:
 		u = Vector3(0,1,0)
 		flag =true
 		ii = 0
 		dp = d
-	if d == 5 and dp == 2 and !flag:
-		u = Vector3(0,-1,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 4 and dp == 3 and !flag:
-		u = Vector3(0,-1,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 5 and dp == 3 and !flag:
-		u = Vector3(0,1,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 2 and dp == 4 and !flag:
-		u = Vector3(0,-1,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 3 and dp == 4 and !flag:
-		u = Vector3(0,1,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 2 and dp == 5 and !flag:
-		u = Vector3(0,1,0)
-		flag =true
-		ii = 0
-		dp = d
-	if d == 3 and dp == 5 and !flag:
+	if (d == 5 and dp == 2 or d == 4 and dp == 3 or d == 2 and dp == 4 or d == 3 and dp == 5) and !flag:
 		u = Vector3(0,-1,0)
 		flag =true
 		ii = 0
