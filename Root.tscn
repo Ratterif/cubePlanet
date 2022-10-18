@@ -51,12 +51,17 @@ shape = SubResource( 14 )
 [node name="cam" type="Spatial" parent="Body/KinematicBody"]
 
 [node name="Camera" type="Camera" parent="Body/KinematicBody/cam"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0737466, 1.50324, -1.35379 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0737466, 1.50324, -1.50003 )
 fov = 57.7738
 far = 8192.0
 
 [node name="item" type="Spatial" parent="Body/KinematicBody/cam"]
 transform = Transform( -0.0109031, 0.0509197, 0.193102, -0.0766478, 0.177511, -0.0511363, -0.184408, -0.0767919, 0.00983727, 0.313013, 1.34966, -2.27836 )
+
+[node name="RayCast" type="RayCast" parent="Body/KinematicBody/cam"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.074, 1.503, -1.5 )
+enabled = true
+cast_to = Vector3( 0, 0, -14 )
 
 [node name="Platform" type="Spatial" parent="."]
 transform = Transform( 1, 4.443e-28, 0, 4.443e-28, 1, 0, 0, 0, 1, 0, 0, 0 )

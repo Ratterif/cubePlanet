@@ -22,6 +22,7 @@ var flag = false
 var ii = 0
 var u = Vector3()
 var dp = 1
+onready var raycast = $cam/RayCast
 
 func rotVec(v: Vector3, b: Basis):
 	return Vector3(
@@ -58,6 +59,9 @@ func _physics_process(delta):
 		print(active_item)
 	if Input.is_action_pressed('ui_LMB'):
 		if(active_item):
+			print(raycast.get_collider(), " ", get_node("../../Platform/KinematicBody/blocks"))
+			if raycast.get_collider():
+				get_node("../../Platform/KinematicBody/blocks").remove_child(raycast.get_collider().get_node("../"))
 			active_item.animation()
 	if Input.is_action_pressed('ui_sprint'):
 		v.x = v.x * 2
@@ -153,10 +157,10 @@ func _input(e):
 		rot_x += e.relative.y * 0.01
 		_vel = Basis().rotated(Vector3(0,1,0), rot_y) * _vel
 		rot_y = 0
-		if rot_x > PI/2:
-			rot_x = PI/2
-		if rot_x < -PI/2:
-			rot_x = -PI/2
+		if rot_x > PI/3:
+			rot_x = PI/3
+		if rot_x < -PI/3:
+			rot_x = -PI/3
 	$cam.transform.basis = Basis(Vector3(-1,0,0), rot_x)
 
 func set_item(path):
@@ -172,7 +176,8 @@ func spawn_block():
 	blocks.append(block)
 	#add_child_below_node(get_tree().get_root().get_node("item"), block)
 	get_node("../../Platform/KinematicBody/blocks").add_child(block)
-	var forw = p_poz + rotVec(Vector3(0,0,-1), _vel)
-	block.translate(Vector3(round(forw.x/2)*2, round(forw.y/2)*2, round(forw.z/2)*2))
+	var forw = raycast.get_collision_point()
+	#block.translate(Vector3(round(forw.x/-2)*2, round(forw.y/2)*2, round(forw.z/2)*2))
+	block.translate(Vector3(round((forw.x-1)/2)*2+1,round((forw.y-1)/2)*2+1,round((forw.z-1)/2)*2+1))
 #	poz.y += 2
 	
