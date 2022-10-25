@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://KinematicBody.gd" type="Script" id=1]
+[ext_resource path="res://2d.tscn" type="PackedScene" id=2]
 
 [sub_resource type="BoxShape" id=9]
 extents = Vector3( 1.00056, 1.00056, 1.00006 )
@@ -62,6 +63,8 @@ transform = Transform( -0.0109031, 0.0509197, 0.193102, -0.0766478, 0.177511, -0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.074, 1.503, -1.5 )
 enabled = true
 cast_to = Vector3( 0, 0, -14 )
+
+[node name="Control" parent="Body/KinematicBody/cam" instance=ExtResource( 2 )]
 
 [node name="Platform" type="Spatial" parent="."]
 transform = Transform( 1, 4.443e-28, 0, 4.443e-28, 1, 0, 0, 0, 1, 0, 0, 0 )

@@ -17,6 +17,9 @@ var num = 0
 var p_poz
 var _GV = Vector3(0, -1, 0)
 var _vel = Basis()
+var lot = Vector2(354, 535)
+var active_lot = 0
+var picked = false
 
 var flag = false
 var ii = 0
@@ -40,6 +43,26 @@ func _physics_process(delta):
 	var snap = Vector3.DOWN * 0.2
 	var v = Vector3(0, 0, 0);
 
+	if Input.is_action_pressed('ui_1'):
+		change_lot(0)
+	if Input.is_action_pressed('ui_2'):
+		change_lot(1)
+	if Input.is_action_pressed('ui_3'):
+		change_lot(2)
+	if Input.is_action_pressed('ui_4'):
+		change_lot(3)
+	if Input.is_action_pressed('ui_5'):
+		change_lot(4)
+	if Input.is_action_pressed('ui_6'):
+		change_lot(5)
+	if Input.is_action_pressed('ui_7'):
+		change_lot(6)
+	if Input.is_action_pressed('ui_8'):
+		change_lot(7)
+	if Input.is_action_pressed('ui_9'):
+		change_lot(8)
+	$cam/Control/Active.transform.origin = Vector2(lot.x + active_lot * 50, lot.y)
+
 	if Input.is_action_pressed('ui_right'):
 		v.x = 10
 	if Input.is_action_pressed('ui_left'):
@@ -52,16 +75,21 @@ func _physics_process(delta):
 		v.y = 20
 		_velocity0.y = v.y
 	if Input.is_action_just_pressed('ui_item'):
-		if(!active_item):
-			set_item("res://pickaxe.tscn")
+		if(!picked):
+			picked = true
+			G.add(2, 'pickaxe', 1, '', "res://pickaxe.png")
 		else:
-			set_item(null)
-		print(active_item)
+			picked = false
+			G.remove(2, -1)
+		set_item()
+		print(G.all)
 	if Input.is_action_pressed('ui_LMB'):
 		if(active_item):
-			print(raycast.get_collider(), " ", get_node("../../Platform/KinematicBody/blocks"))
-			if raycast.get_collider():
-				get_node("../../Platform/KinematicBody/blocks").remove_child(raycast.get_collider().get_node("../"))
+			var colide = raycast.get_collider()
+			if colide and colide.get_script() and colide.has_method('action'):
+				print (colide.texture)
+				colide.call("action")
+				get_node("../../Platform/KinematicBody/blocks").remove_child(colide.get_node("../"))
 			active_item.animation()
 	if Input.is_action_pressed('ui_sprint'):
 		v.x = v.x * 2
@@ -163,21 +191,39 @@ func _input(e):
 			rot_x = -PI/3
 	$cam.transform.basis = Basis(Vector3(-1,0,0), rot_x)
 
-func set_item(path):
-	if !path:
+func set_item():
+	if active_item:
+		print("bbb")
 		$cam/item.remove_child(active_item)
 		active_item = null
-	else:
-		active_item = load(path).instance()
-		$cam/item.add_child(active_item)
+	print(G.all.has(active_lot))
+	if G.all.has(active_lot):
+		if G.all[active_lot].label == 'pickaxe':
+			active_item = load("res://pickaxe.tscn").instance()
+			$cam/item.add_child(active_item)
+		else:
+			active_item = load("res://cube.tscn").instance()
+			active_item.get_node("KinematicBody/MeshInstance").get_active_material(0).normal_texture = load(G.all[active_lot].texture)
+			$cam/item.add_child(active_item)
 
 func spawn_block():
 	var block = load("res://cube.tscn").instance()
+	var item = block.get_node("KinematicBody")
 	blocks.append(block)
 	#add_child_below_node(get_tree().get_root().get_node("item"), block)
 	get_node("../../Platform/KinematicBody/blocks").add_child(block)
 	var forw = raycast.get_collision_point()
 	#block.translate(Vector3(round(forw.x/-2)*2, round(forw.y/2)*2, round(forw.z/2)*2))
 	block.translate(Vector3(round((forw.x-1)/2)*2+1,round((forw.y-1)/2)*2+1,round((forw.z-1)/2)*2+1))
+	item.label = "dirt"
+	item.texture = "res://dirt.png"
+	item.icon = "res://dirt_icon.png"
+	var mesh = item.get_node("MeshInstance")
+	var mat = mesh.get_active_material(0)
+	var tex = load("res://dirt.png") 
+	mat.normal_texture = tex
+	item.key = 0
 #	poz.y += 2
-	
+func change_lot(num):
+	active_lot = num
+	set_item()
