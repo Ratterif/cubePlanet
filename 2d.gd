@@ -18,6 +18,9 @@ func _ready():
 		$Lot2/Label,
 		$Lot3/Label
 	]
+	G.add(0, 'dirt', 16, "res://dirt.png", "res://dirt_icon.png")
+	G.add(1, 'rock', 20, "res://rock.png", "res://rock_icon.png")
+
 	# Replace with function body.
 
 

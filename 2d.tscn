@@ -81,11 +81,13 @@ texture = ExtResource( 2 )
 
 [node name="item" type="Sprite" parent="Lot2"]
 position = Vector2( 40, 25 )
-scale = Vector2( 5, 5 )
 
 [node name="Label" type="Label" parent="Lot2"]
-margin_right = 40.0
-margin_bottom = 14.0
+margin_left = 50.0
+margin_top = 60.0
+margin_right = 71.0
+margin_bottom = 74.0
+rect_scale = Vector2( 10, 10 )
 
 [node name="Lot4" type="Sprite" parent="."]
 position = Vector2( 504, 535 )

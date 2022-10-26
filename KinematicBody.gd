@@ -36,6 +36,33 @@ func rotVec(v: Vector3, b: Basis):
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	OS.center_window()
+	world_gen()
+	set_item()
+
+func world_gen():
+	for x in range(-24, 24):
+		for y in range(-24, 24):
+			for z in range(-24, 24):
+				if (x > 20 or x < -20 or y > 20 or y < -20 or z > 20 or z< -20) and ((x % 2 == 1 or -x % 2 == 1) and (y % 2 == 1 or -y % 2 == 1) and (z % 2 == 1 or -z % 2 == 1)):
+					if randf() < 0.1:
+						var id = randi() % 2
+						var block = load("res://cube.tscn").instance()
+						var item = block.get_node("KinematicBody")
+						blocks.append(block)
+						#add_child_below_node(get_tree().get_root().get_node("item"), block)
+						get_node("../../Platform/KinematicBody/blocks").add_child(block)
+						block.translate(Vector3(x, y, z))
+						item.label = G.conf[id].label
+						item.texture = G.conf[id].texture
+						item.icon = G.conf[id].icon
+						item.count = G.conf[id].count
+						var mesh = item.get_node("MeshInstance")
+						var mat = SpatialMaterial.new()
+						mat.albedo_texture = load(item.texture)
+						mesh.material_override = mat
+						item.key = id
+
 
 func _physics_process(delta):
 	var base = Basis(Vector3(), PI/2)
@@ -43,23 +70,23 @@ func _physics_process(delta):
 	var snap = Vector3.DOWN * 0.2
 	var v = Vector3(0, 0, 0);
 
-	if Input.is_action_pressed('ui_1'):
+	if Input.is_action_just_pressed('ui_1'):
 		change_lot(0)
-	if Input.is_action_pressed('ui_2'):
+	if Input.is_action_just_pressed('ui_2'):
 		change_lot(1)
-	if Input.is_action_pressed('ui_3'):
+	if Input.is_action_just_pressed('ui_3'):
 		change_lot(2)
-	if Input.is_action_pressed('ui_4'):
+	if Input.is_action_just_pressed('ui_4'):
 		change_lot(3)
-	if Input.is_action_pressed('ui_5'):
+	if Input.is_action_just_pressed('ui_5'):
 		change_lot(4)
-	if Input.is_action_pressed('ui_6'):
+	if Input.is_action_just_pressed('ui_6'):
 		change_lot(5)
-	if Input.is_action_pressed('ui_7'):
+	if Input.is_action_just_pressed('ui_7'):
 		change_lot(6)
-	if Input.is_action_pressed('ui_8'):
+	if Input.is_action_just_pressed('ui_8'):
 		change_lot(7)
-	if Input.is_action_pressed('ui_9'):
+	if Input.is_action_just_pressed('ui_9'):
 		change_lot(8)
 	$cam/Control/Active.transform.origin = Vector2(lot.x + active_lot * 50, lot.y)
 
@@ -83,8 +110,8 @@ func _physics_process(delta):
 			G.remove(2, -1)
 		set_item()
 		print(G.all)
-	if Input.is_action_pressed('ui_LMB'):
-		if(active_item):
+	if Input.is_action_just_pressed('ui_LMB'):
+		if active_lot == 2:
 			var colide = raycast.get_collider()
 			if colide and colide.get_script() and colide.has_method('action'):
 				print (colide.texture)
@@ -98,10 +125,13 @@ func _physics_process(delta):
 	_velocity0.z = v.z
 	
 	if Input.is_action_just_pressed('ui_RMB'):
-		spawn_block()
+		spawn_block(active_lot)
 	
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
+	if Input.is_action_just_pressed("ui_end"):
+		print("active_lot ", active_lot)
+		active_lot = 0
 
 	transform.basis = Basis() * _vel.inverse()
 	
@@ -203,27 +233,33 @@ func set_item():
 			$cam/item.add_child(active_item)
 		else:
 			active_item = load("res://cube.tscn").instance()
-			active_item.get_node("KinematicBody/MeshInstance").get_active_material(0).normal_texture = load(G.all[active_lot].texture)
+			var mat2 = SpatialMaterial.new()
+			mat2.albedo_texture = load(G.all[active_lot].texture)
+			active_item.get_node("KinematicBody/MeshInstance").material_override = mat2
 			$cam/item.add_child(active_item)
 
-func spawn_block():
-	var block = load("res://cube.tscn").instance()
-	var item = block.get_node("KinematicBody")
-	blocks.append(block)
-	#add_child_below_node(get_tree().get_root().get_node("item"), block)
-	get_node("../../Platform/KinematicBody/blocks").add_child(block)
-	var forw = raycast.get_collision_point()
-	#block.translate(Vector3(round(forw.x/-2)*2, round(forw.y/2)*2, round(forw.z/2)*2))
-	block.translate(Vector3(round((forw.x-1)/2)*2+1,round((forw.y-1)/2)*2+1,round((forw.z-1)/2)*2+1))
-	item.label = "dirt"
-	item.texture = "res://dirt.png"
-	item.icon = "res://dirt_icon.png"
-	var mesh = item.get_node("MeshInstance")
-	var mat = mesh.get_active_material(0)
-	var tex = load("res://dirt.png") 
-	mat.normal_texture = tex
-	item.key = 0
-#	poz.y += 2
+func spawn_block(num):
+	if G.has(num) and num != 2:
+		var block = load("res://cube.tscn").instance()
+		var item = block.get_node("KinematicBody")
+		blocks.append(block)
+		#add_child_below_node(get_tree().get_root().get_node("item"), block)
+		get_node("../../Platform/KinematicBody/blocks").add_child(block)
+		var forw = raycast.get_collision_point()
+		#block.translate(Vector3(round(forw.x/-2)*2, round(forw.y/2)*2, round(forw.z/2)*2))
+		block.translate(Vector3(round((forw.x-1)/2)*2+1,round((forw.y-1)/2)*2+1,round((forw.z-1)/2)*2+1))
+		item.label = G.all[num].label
+		item.texture = G.all[num].texture
+		item.icon = G.all[num].icon
+		item.count = G.conf[num].count
+		var mesh = item.get_node("MeshInstance")
+		var mat = SpatialMaterial.new()
+		mat.albedo_texture = load(item.texture)
+		mesh.material_override = mat
+		item.key = num
+		G.remove(num, 1)
+		set_item()
+#		poz.y += 2
 func change_lot(num):
 	active_lot = num
 	set_item()
