@@ -111,13 +111,31 @@ func _physics_process(delta):
 		set_item()
 		print(G.all)
 	if Input.is_action_just_pressed('ui_LMB'):
-		if active_lot == 2:
-			var colide = raycast.get_collider()
-			if colide and colide.get_script() and colide.has_method('action'):
-				print (colide.texture)
+		var colide = raycast.get_collider()
+		if colide and colide.get_script() and colide.has_method('action'):
+			if active_lot == 2:
+				if colide.status == "stand":
+					print (colide.texture)
+					var drop = load("res://cube.tscn").instance()
+					print(raycast.get_collision_point())
+					get_node("../../Platform/KinematicBody/drops").add_child(drop)
+					drop.translate(raycast.get_collision_point()*5)
+					var item = drop.get_node("KinematicBody")
+					item.status = "drop"
+					item.label = colide.label
+					item.texture = colide.texture
+					item.icon = colide.icon
+					item.count = colide.count
+					var mesh = item.get_node("MeshInstance")
+					var mat = SpatialMaterial.new()
+					mat.albedo_texture = load(colide.texture)
+					mesh.material_override = mat
+					item.key = colide.key
+					get_node("../../Platform/KinematicBody/blocks").remove_child(colide.get_node("../"))
+					active_item.animation()
+			if colide.status == "drop":
 				colide.call("action")
-				get_node("../../Platform/KinematicBody/blocks").remove_child(colide.get_node("../"))
-			active_item.animation()
+				get_node("../../Platform/KinematicBody/drops").remove_child(colide.get_node("../"))
 	if Input.is_action_pressed('ui_sprint'):
 		v.x = v.x * 2
 		v.z = v.z * 2
@@ -138,30 +156,12 @@ func _physics_process(delta):
 	if !is_on_floor() and !is_on_wall() and !is_on_ceiling():
 		_velocity0 += Vector3(0, -1, 0) * _gravity * delta
 
-	var d1 = (p_poz.x + p_poz.y) / sqrt(2)
-	var d2 = (p_poz.x - p_poz.y) / sqrt(2)
-	var d3 = (p_poz.z + p_poz.y) / sqrt(2)
-	var d4 = (p_poz.z - p_poz.y) / sqrt(2)
-	var d5 = (p_poz.z + p_poz.x) / sqrt(2)
-	var d6 = (p_poz.z - p_poz.x) / sqrt(2)
 	#print (d4, " ", p_poz.x, " ", p_poz.y, " ", p_poz.z)
 
 	_velocity = rotVec(_velocity0, _vel)
 
-	var d
+	var d = G.get_side(p_poz)
 
-	if d1 >0 and d2 < 0 and d3 > 0 and d4<0:
-		d = 1
-	if d1 <0 and d2 < 0 and d5< 0 and d6> 0:
-		d = 2
-	if d1 >0 and d2 > 0 and d5 > 0 and d6<0:
-		d = 3
-	if d1 <0 and d2 > 0 and d3 < 0 and d4>0:
-		d = 6
-	if d3 <0 and d4 < 0 and d5 < 0 and d6<0:
-		d = 4
-	if d3 >0 and d4 > 0 and d5 > 0 and d6>0:
-		d = 5
 
 	if (d == 2 and dp == 1 or d == 1 and dp == 3 or d == 6 and dp == 2 or d == 3 and dp == 6) and !flag:
 		u = Vector3(0,0,-1)

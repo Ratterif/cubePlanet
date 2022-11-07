@@ -5,6 +5,27 @@ var conf = {0: {'label': 'dirt', 'count': 1, 'texture': "res://dirt.png", 'icon'
 var control
 var labels
 
+func get_side(p_poz):
+	var d1 = (p_poz.x + p_poz.y) / sqrt(2)
+	var d2 = (p_poz.x - p_poz.y) / sqrt(2)
+	var d3 = (p_poz.z + p_poz.y) / sqrt(2)
+	var d4 = (p_poz.z - p_poz.y) / sqrt(2)
+	var d5 = (p_poz.z + p_poz.x) / sqrt(2)
+	var d6 = (p_poz.z - p_poz.x) / sqrt(2)
+	if d1 >0 and d2 < 0 and d3 > 0 and d4<0:
+		return(1)
+	if d1 <0 and d2 < 0 and d5< 0 and d6> 0:
+		return(2)
+	if d1 >0 and d2 > 0 and d5 > 0 and d6<0:
+		return(3)
+	if d1 <0 and d2 > 0 and d3 < 0 and d4>0:
+		return(6)
+	if d3 <0 and d4 < 0 and d5 < 0 and d6<0:
+		return(4)
+	if d3 >0 and d4 > 0 and d5 > 0 and d6>0:
+		return(5)
+
+
 func add(key, label='', count=1, texture='', icon=''):
 	if all.has(key):
 		all[key].count += count

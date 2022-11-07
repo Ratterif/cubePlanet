@@ -42,7 +42,7 @@ mesh = SubResource( 10 )
 material/0 = SubResource( 11 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Body/KinematicBody"]
-transform = Transform( 0.4, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 1.5, -0.336039 )
+transform = Transform( 0.4, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 1.5, 0 )
 mesh = SubResource( 13 )
 
 [node name="CollisionShape2" type="CollisionShape" parent="Body/KinematicBody"]
@@ -50,6 +50,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0 )
 shape = SubResource( 14 )
 
 [node name="cam" type="Spatial" parent="Body/KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5 )
 
 [node name="Camera" type="Camera" parent="Body/KinematicBody/cam"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0737466, 1.50324, -1.50003 )
@@ -112,3 +113,6 @@ transform = Transform( 1, -1.3329e-27, 0, 4.443e-28, 1, 0, 0, 0, 1, 1.00601e-26,
 light_color = Color( 1, 0.631373, 0, 1 )
 
 [node name="blocks" type="Spatial" parent="Platform/KinematicBody"]
+
+[node name="drops" type="Spatial" parent="Platform/KinematicBody"]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
