@@ -6,9 +6,12 @@ export var count = 1
 export(Texture) var texture
 export(Texture) var icon
 export var status = "stand"
+export var type = "block"
+export var loader = ""
+export({}) var storage = null
 var v = Vector3()
 var vec =Vector3.DOWN
-var p_poz
+var p_poz = global_transform.origin
 
 #func _process(delta):
 #	if status == "drop":
@@ -16,8 +19,10 @@ var p_poz
 #	if label = "chest":
 #		add_child()
 func _physics_process(delta):
+	p_poz = global_transform.origin
+	if label == "chest" and typeof(storage) != 18:
+		storage = {}
 	if status == "drop":
-		p_poz = global_transform.origin
 		var d = G.get_side(p_poz)
 		if d == 1:
 			vec = Vector3.DOWN
@@ -39,7 +44,29 @@ func _physics_process(delta):
 		v = move_and_slide(v, vec, false)
 
 func action():
-	print("Action", key)
-#	G.global.add(key, label, count, texture, icon)
-	G.add(key, label, count, texture, icon)
-	print(G.all)
+	pass
+func drop():
+	for n in range(27):
+		if storage.has(n):
+			var drop
+			if G.conf[storage[n].key].type == "block":
+				drop = load("res://cube.tscn").instance()
+			else: drop = load(G.conf[storage[n].key].loader).instance()
+			var item = drop.get_node("KinematicBody")
+			G.Drops.add_child(drop)
+			drop.translate(p_poz*5)
+			item.status = "drop"
+			item.label = G.conf[storage[n].key].label
+			item.texture = G.conf[storage[n].key].texture
+			item.icon = G.conf[storage[n].key].icon
+			item.count = storage[n].count
+			item.type = G.conf[storage[n].key].type
+			item.loader = G.conf[storage[n].key].loader
+			if G.conf[storage[n].key].type == "block":
+				var mesh = item.get_node("MeshInstance")
+				var mat = SpatialMaterial.new()
+				mat.albedo_texture = load(item.texture)
+				mesh.material_override = mat
+			item.key = storage[n].key
+	G.Blocks.remove_child(get_node("../"))
+

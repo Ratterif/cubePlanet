@@ -12,15 +12,23 @@ func _ready():
 	]
 	G.labels = [
 	]
-	for n in range(0, 9):
-		var lot = load("res://lot.tscn").instance()
+	for n in range(9):
+		var lot = preload("res://lot.tscn").instance()
+		lot.connect('gui_input', self, 'on_input_item', [lot, n])
+		print("connn ", lot)
 		add_child(lot)
-		lot.get_node("Lot").transform.origin = Vector2(354+n*50, 535)
+		lot.rect_position = Vector2(n*50, 0)
 		G.control.append(lot.get_node("Lot/item"))
-		print(G.control)
 		G.labels.append(lot.get_node("Lot/Label"))
-	G.add(0, 'dirt', 16, "res://dirt.png", "res://dirt_icon.png")
-	G.add(1, 'rock', 20, "res://rock.png", "res://rock_icon.png")
+
+func on_input_item(e, item, key):
+	if e is InputEventMouseButton:
+		if e.pressed:
+			if !G.moving:
+				if G.all.has(key):
+					G.moving = {'type': "self", 'content' : G.all[key], 'lot': key}
+			else:
+				G.move({'type': "self", 'lot': key})
 
 	# Replace with function body.
 

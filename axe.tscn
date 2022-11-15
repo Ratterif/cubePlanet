@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://pickaxe.gd" type="Script" id=1]
+[ext_resource path="res://axe.gd" type="Script" id=1]
 
 [sub_resource type="CylinderMesh" id=1]
 
@@ -61,6 +61,7 @@ tracks/0/keys = {
 [node name="pickaxe" type="Spatial"]
 
 [node name="KinematicBody" type="KinematicBody" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
 script = ExtResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="KinematicBody"]
@@ -70,19 +71,19 @@ skeleton = NodePath("../..")
 material/0 = SubResource( 6 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="KinematicBody"]
-transform = Transform( 1.5, 0, 0, 0, 0.333, 0, 0, 0, 0.25, 0, 4, 0 )
+transform = Transform( 1, 0, 0, 0, 0.333, 0, 0, 0, 0.25, -0.438158, 4, 0 )
 mesh = SubResource( 2 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 3 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="KinematicBody"]
-transform = Transform( 0.353553, -0.235467, 0, 0.353553, 0.235467, 0, 0, 0, 0.25, -1.59684, 3.7378, 0 )
+transform = Transform( 0.443553, -0.153701, 0, 0.230781, 0.295407, 0, 0, 0, 0.25, -0.840131, 4.39009, 0 )
 mesh = SubResource( 2 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 4 )
 
 [node name="MeshInstance4" type="MeshInstance" parent="KinematicBody"]
-transform = Transform( 0.353553, 0.235467, 0, -0.353553, 0.235467, 0, 0, 0, 0.25, 1.61395, 3.738, 0 )
+transform = Transform( -2.18557e-08, 0.333001, 0, -0.499999, -1.45559e-08, 0, 0, 0, 0.25, 0.364551, 3.76676, 0 )
 mesh = SubResource( 2 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 5 )
@@ -92,15 +93,15 @@ transform = Transform( 0.2, 0, 0, 0, 2, 0, 0, 0, 0.2, 0, 2, 0 )
 shape = SubResource( 9 )
 
 [node name="CollisionShape2" type="CollisionShape" parent="KinematicBody"]
-transform = Transform( 1.5, 0, 0, 0, 0.333, 0, 0, 0, 0.25, 0, 4, 0 )
+transform = Transform( 1, 0, 0, 0, 0.333, 0, 0, 0, 0.25, -0.438, 4, 0 )
 shape = SubResource( 10 )
 
 [node name="CollisionShape3" type="CollisionShape" parent="KinematicBody"]
-transform = Transform( 0.353553, -0.235467, 0, 0.353553, 0.235467, 0, 0, 0, 0.25, -1.597, 3.738, 0 )
+transform = Transform( 0.443553, -0.153701, 0, 0.230781, 0.295407, 0, 0, 0, 0.25, -0.84, 4.39, 0 )
 shape = SubResource( 11 )
 
 [node name="CollisionShape4" type="CollisionShape" parent="KinematicBody"]
-transform = Transform( 0.353553, 0.235467, 0, -0.353553, 0.235467, 0, 0, 0, 0.25, 1.614, 3.738, 0 )
+transform = Transform( -2.18557e-08, 0.333001, 0, -0.499999, -1.45559e-08, 0, 0, 0, 0.25, 0.365, 3.767, 0 )
 shape = SubResource( 12 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="KinematicBody"]

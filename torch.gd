@@ -1,13 +1,13 @@
 extends KinematicBody
 
-export var key = 4
-export var label = "pickaxe"
+export var key = 6
+export var label = "torch"
 export var count = 1
 export(Texture) var texture
 export(Texture) var icon
 export var status = "use"
-export var type = "tool"
-export var loader = "res://pickaxe.tscn"
+export var type = "item"
+export var loader = "res://torch.tscn"
 var v = Vector3()
 var vec =Vector3.DOWN
 var p_poz
